@@ -10,7 +10,7 @@ function Template() {
                 display: "flex",
                 flexDirection: "column",
                 minHeight: "100vh",
-                px : 2 
+                px : 1 
             }}>
                 <Header />
                 <Box sx={{ flex: 1, p: 2 }}>
