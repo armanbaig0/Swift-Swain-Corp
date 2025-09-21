@@ -1,34 +1,31 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
+'use client'
+import { Inter } from 'next/font/google'
+import { ThemeProvider } from '@mui/material/styles'
+import CssBaseline from '@mui/material/CssBaseline'
+import { theme } from '../app/theme'
+import SmoothScroll from '../app/components/smoothScroll'
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
-export const metadata: Metadata = {
-  title: "Swift Swain Corp",
-  description: "Auto Spare Parts",
-};
+const inter = Inter({ subsets: ['latin'] })
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: {
+  children: React.ReactNode
+}) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
+      <head>
+        <title>Apex Auto Firm</title>
+        <meta name="description" content="Premium Auto Spare Parts" />
+      </head>
+      <body className={inter.className}>
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
+          <SmoothScroll>
+          {children}
+          </SmoothScroll>
+        </ThemeProvider>
       </body>
     </html>
-  );
+  )
 }
