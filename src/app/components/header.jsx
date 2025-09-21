@@ -1,107 +1,117 @@
-'use client';
+import {
+  AppBar,
+  Toolbar,
+  IconButton,
+  Button,
+  TextField,
+  InputAdornment,
+  Badge,
+  Box,
+  Typography,
+  useTheme,
+  useMediaQuery
+} from '@mui/material'
+import Image from 'next/image'
+import {
+  Menu as MenuIcon,
+  Search,
+  ShoppingCart,
+  Settings,
+} from '@mui/icons-material'
 
-import { AppBar, Toolbar, IconButton, Typography, Menu, MenuItem, Box, Button, Link } from "@mui/material";
-import MenuIcon from '@mui/icons-material/Menu';
-import { useState } from 'react';
-import Image from "next/image";
-import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
-
-
-function Header() {
-  const [anchorEl, setAnchorEl] = useState(null);
-
-  const handleOpenMenu = (event) => setAnchorEl(event.currentTarget);
-  const handleCloseMenu = () => setAnchorEl(null);
-
-  const navLinks = [
-    { label: 'Home', href: 'https://www.ebay.com/str/swiftswaincorp' },
-    { label: 'Help', href: 'https://www.ebay.com/cnt/intermediatedFAQ?requested=swiftswain' },
-    { label: 'Feedback', href: 'https://www.ebay.com/str/swiftswaincorp?_tab=feedback' },
-    { label: 'Follow Us', href: 'https://ebay.us/m/LUhWNF' },
-    { label: "See What's New", href: 'https://www.ebay.com/sch/i.html?store_name=swiftswaincorp&_ssn=swiftswain&LH_PrefLoc=3&_stpos=64062&_fcid=1&_oac=1' }
-  ];
+export default function Header({
+  searchQuery,
+  setSearchQuery,
+  onMobileMenuOpen,
+  onCartOpen,
+  onQuoteOpen,
+  cartItemCount
+}) {
+  const theme = useTheme()
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'))
 
   return (
-    <AppBar position="static" sx={{ px: 2, mt: 2, backgroundColor: { xs: "#1D76BB", sm: "#ec7611" } }}>
+    <AppBar
+      position="sticky"
+      sx={{
+        background: 'rgba(30, 41, 59, 0.8)',
+        backdropFilter: 'blur(12px)',
+        borderBottom: '1px solid rgba(71, 85, 105, 0.4)'
+      }}
+    >
       <Toolbar>
+        <IconButton
+          edge="start"
+          color="inherit"
+          onClick={onMobileMenuOpen}
+          sx={{ mr: 2, display: { md: 'none' } }}
+        >
+          <MenuIcon />
+        </IconButton>
 
-        {/* Mobile Menu */}
-        <Box sx={{ display: { xs: 'flex', md: 'none', }, ml: -3, mr: 3, }}>
-          <IconButton
-            size="large"
-            edge="end"
-            color="inherit"
-            onClick={handleOpenMenu}
+        <Box sx={{ display: 'flex', alignItems: 'center', mr: 3 }}>
+          <Box
+            sx={{
+              width: 36,
+              height: 36,
+              borderRadius: '12px',
+              background: 'linear-gradient(135deg, #f97316 0%, #ea580c 100%)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              mr: 1,
+              boxShadow: '0 10px 25px rgba(249, 115, 22, 0.25)'
+            }}
           >
-            <MenuIcon />
-          </IconButton>
-          <Menu
-            anchorEl={anchorEl}
-            open={Boolean(anchorEl)}
-            onClose={handleCloseMenu}
-          >
-            {navLinks.map((link) => (
-              <MenuItem
-                key={link.label}
-                onClick={handleCloseMenu}
-                sx={{
-                  "&:hover": {
-                    backgroundColor: "#1D76BB",
-                    color: "#fff",
-                    borderRadius : 2,
-                    px: 2
-                  },
-                }}
-                >
-                <Link href={link.href} underline="none" color="inherit" target="_blank">
-                  {link.label}
-                </Link>
-              </MenuItem>
-            ))}
-          </Menu>
+            <Settings sx={{ fontSize: 20, color: 'white' }} />
+            {/* <Image src={'/images/Apex Logo.png'}></Image> */}
+          </Box>
+          <Box>
+            <Typography variant="h6" component="div" sx={{ fontWeight: 800, fontSize: '1.1rem' }}>
+              <i>Apex Auto Firm</i>
+            </Typography>
+          </Box>
         </Box>
 
-        {/* Logo / Brand */}
-        <Box sx={{ mr: 1 }}>
-          <Image
-            src="/images/logo.webp" // public/images/logo.png
-            alt="Swift Swain Corp Logo"
-            width={40}
-            height={40}
+        <Box sx={{ flexGrow: 1, maxWidth: 600, mx: 3, display: { xs: 'none', md: 'block' } }}>
+          <TextField
+            fullWidth
+            placeholder="Search parts (e.g. bumpers, grilles, lights)"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <Search sx={{ color: 'text.secondary' }} />
+                </InputAdornment>
+              ),
+            }}
+            size="small"
           />
         </Box>
-        <Typography
-          variant="h6"
-          noWrap
-          sx={{ flexGrow: 1, fontWeight: 'bold' }}
-        >
-          Swift Swain Corp
-        </Typography>
 
-        {/* Desktop Links */}
-        <Box sx={{ display: { xs: 'none', md: 'flex' }, gap: 2 }}>
-          {navLinks.map((link) => (
-            <Link
-              key={link.label}
-              href={link.href}
-              underline="none"
-              color="inherit"
-              target="_blank"
-              sx={{
-                  "&:hover": {
-                    backgroundColor: "#1D76BB",
-                    color: "#fff",
-                    borderRadius : 2
-                  },
-              }}
-            >
-              <Button sx={{ color: '#fff' }}>{link.label}</Button>
-            </Link>
-          ))}
+        <Box sx={{ display: { xs: 'none', md: 'flex' }, alignItems: 'center', gap: 1 }}>
+          <Button color="inherit" href="#catalog">Catalog</Button>
+          <Button color="inherit" href="#about">About</Button>
+          <Button color="inherit" href="#contact">Contact</Button>
+          <Button
+            variant="contained"
+            sx={{ ml: 1 }}
+            onClick={onQuoteOpen}
+          >
+            Request Quote
+          </Button>
+          {/* <IconButton
+            color="inherit"
+            onClick={onCartOpen}
+            sx={{ ml: 1 }}
+          >
+            <Badge badgeContent={cartItemCount} color="primary">
+              <ShoppingCart />
+            </Badge>
+          </IconButton> */}
         </Box>
       </Toolbar>
     </AppBar>
-  );
+  )
 }
-
-export default Header;
